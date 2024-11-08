@@ -118,7 +118,7 @@ SELECT * FROM customer;
 
 SELECT 
     c.gname, 
-    c.point
+    c.point,
     'Nootbook' GNAME_1
     
 FROM customer c, gift g
