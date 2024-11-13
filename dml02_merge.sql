@@ -188,4 +188,25 @@ WHERE TO_CHAR(w_date, 'MM') = 11; -- 11월
 SELECT *
 FROM comp_m;   -- 신발게가 따로 옷가게 따로 매출 확인
 
+MERGE INTO COMP_M m
+USING SHOE_M s
+ON (m.w_date = s.w_date AND m.s_code = s.s_code)
+WHEN MATCHED THEN    --조건이 일치하는게 있으면
+    UPDATE SET m.sales = s.sales
+WHEN NOT MATCHED THEN   -- 조건 일하는게 없으면
+    INSERT VALUES (s.w_date, s.s_code, s.sales, 'S');
+    
+ MERGE INTO COMP_M m
+USING CLOT_M c
+ON (m.w_date = c.w_date AND m.s_code = c.s_code)
+WHEN MATCHED THEN    --조건이 일치하는게 있으면
+    UPDATE SET m.sales = c.sales
+WHEN NOT MATCHED THEN   -- 조건 일하는게 없으면
+    INSERT VALUES (c.w_date, c.s_code, c.sales, 'C');
 
+SELECT type, s_code, SUM(sales) 
+FROM comp_m
+GROUP BY type, s_code;
+
+
+commit;
