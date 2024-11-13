@@ -70,10 +70,81 @@ SELECT
     FLOOR(price / 10000) * 10000 PRICE_GROUP,
     COUNT(*) PRODUCTS
 FROM product_quiz
-GROUP BY price
-ORDER BY price;
+GROUP BY FLOOR(price / 10000) * 10000
+ORDER BY PRICE_GROUP;
       
                             
-SELECT product_id
+
+SELECT 
+    FLOOR(price / 10000) * 10000 PRICE_GROUP,
+    COUNT(*) PRODUCTS
 FROM product_quiz
-WHERE price BETWEEN 0 AND 9999;                                                             
+GROUP BY FLOOR(price / 10000) * 10000
+ORDER BY PRICE_GROUP;
+
+
+-- 1. 단순 계산 먼저
+    SELECT 0 PRICE_GROUP, COUNT(*) PRODUCTS
+    FROM product_quiz
+    WHERE price BETWEEN 0  AND 9999
+UNION ALL
+    SELECT 10000, COUNT(*)
+    FROM product_quiz
+    WHERE price BETWEEN 10000  AND 19999
+UNION ALL
+    SELECT 20000, COUNT(*)
+    FROM product_quiz
+    WHERE price BETWEEN 20000  AND 29999
+UNION ALL
+    SELECT 30000, COUNT(*)
+    FROM product_quiz
+    WHERE price BETWEEN 30000  AND 39999;
+
+
+--- group by로 묶기
+--만의 자리 수를 뽑아내면?
+
+/*
+10000 1
+900   0
+22000 2
+30000 1
+15000 3
+17000 1
+*/
+SELECT TRUNC(price/10000)
+FROM product_quiz;
+
+SELECT 
+    TRUNC(price/10000)*10000 price_group,
+    COUNT(*) products
+FROM product_quiz
+GROUP BY TRUNC(price/10000)
+ORDER BY price_group;
+
+SELECT
+    CASE
+            WHEN price BETWEEN 0 AND 9999 THEN 0
+            WHEN price BETWEEN 10000 AND 19999 THEN 10000
+            WHEN price BETWEEN 20000 AND 29999 THEN 20000
+            WHEN price BETWEEN 30000 AND 39999 THEN 30000
+        END price_group,
+    COUNT(*) products
+FROM product_quiz
+GROUP BY CASE
+            WHEN price BETWEEN 0 AND 9999 THEN 0
+            WHEN price BETWEEN 10000 AND 19999 THEN 10000
+            WHEN price BETWEEN 20000 AND 29999 THEN 20000
+            WHEN price BETWEEN 30000 AND 39999 THEN 30000
+        END
+ORDER BY price_group;
+
+SELECT price price_group, count(*) priducts
+FROM(
+        SELECT product_id, product_code, TRUNC(price/10000)*10000 price
+        FROM product_quiz)
+GROUP BY price
+ORDER BY price;
+
+
+
