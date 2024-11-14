@@ -4,10 +4,10 @@
 1. 다음 두 명령어는 어떤 기능을 수행하는 명령어인지 작성하고,
 두 기능의 차이점이 있다면 설명하시오.
 DELETE FROM 테이블명;
------ROLLBACK 가능
+-----ROLLBACK 가능, 특정 테이터 삭제 가능 DML
 
 TRUNCATE TABLE 테이블명;
------ROLLBACK 불가능
+-----ROLLBACK 불가능, 통으로 삭제 DDL
 */
 
 
@@ -80,3 +80,12 @@ SELECT T_MEMBER_POINT_PK_SEQ.currval FROM dual;
 
 DELETE T_MEMBER_POINT;
 DROP SEQUENCE T_MEMBER_POINT_PK_SEQ;
+
+
+--
+INSERT INTO T_MEMBER_POINT(id,no,memid,scoer)
+VALUES (T_MEMBER_POINT_PK_SEQ.nextval,
+
+
+
+--------------------------------------------------------------------------------
