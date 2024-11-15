@@ -64,3 +64,4 @@ ORDER BY SAL DESC;
 --5-3) 1521
 --5-4) scott   
 --5-5) tiger
+-- 시험 끝
